@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {useState, useEffect} from 'react';
+import {Container, Row, Col, Card} from 'react-bootstrap'
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import SERVER_URL from '../constants/constants';
-import { format } from 'date-fns'
+import {format} from 'date-fns'
 import EventDetails from '../components/EventDetails';
 
 const EventsPage = () => {
@@ -14,107 +14,128 @@ const EventsPage = () => {
     const moveEvent = (sourceState, destinationState, sourceIndex, destinationIndex) => {
         const sourceEvents = [...sourceState];
         const destinationEvents = [...destinationState];
-        const [movedEvent] = sourceEvents.splice(sourceIndex, 1);            
+        const [movedEvent] = sourceEvents.splice(sourceIndex, 1);
         destinationEvents.splice(destinationIndex, 0, movedEvent);
-        return { movedEventId: movedEvent._id, sourceEvents, destinationEvents };
+        return {movedEventId: movedEvent._id, sourceEvents, destinationEvents};
     }
-    const updateEvent = async (eventId, newStatus) => {
+    const updateEvent = async (eventId, index, newStatus = null) => {
         const url = SERVER_URL + "/api/events/" + eventId;
-        const updateStatus = {
-            status: newStatus
+        const update = {
+            index: index,
         }
+
+        if (newStatus !== null) {
+            update.status = newStatus;
+        }
+
         await fetch(url, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify(updateStatus)
+            body: JSON.stringify(update)
         })
     }
-    const onDragEnd = (result) => {
+
+    const updateDestinationEvents = async (eventId, sourceIndex, destinationIndex, collection) => {
+        let i = destinationIndex + 1;
+        const events = collection.slice(destinationIndex);
+        for (let e of events) {
+            if (e._id !== eventId) {
+                await updateEvent(e._id, i++);
+            }
+        }
+    }
+
+    const updateSourceEvents = async (sourceIndex, collection) => {
+        let i = sourceIndex;
+        const events = collection.slice(sourceIndex + 1)
+        for (let e of events) {
+            await updateEvent(e._id, i++);
+        }
+    }
+
+    const onDragEnd = async (result) => {
         if (!result.destination) {
             return;
         }
-        
+
         switch (result.source.droppableId) {
             case "backlog":
                 if (result.destination.droppableId === "backlog") {
                     const newEventsBacklog = [...eventsBacklog];
                     const [movedEvent] = newEventsBacklog.splice(result.source.index, 1);
-                    newEventsBacklog.splice(result.destination.index, 0, movedEvent);
-                    setEventsBacklog(newEventsBacklog);
+                    await updateDestinationEvents(movedEvent._id, result.source.index, result.destination.index, eventsBacklog);
+                    await updateEvent(movedEvent._id, result.destination.index);
                 } else if (result.destination.droppableId === "active") {
-                    const { movedEventId, sourceEvents, destinationEvents } = moveEvent(
-                        eventsBacklog, 
-                        eventsActive, 
-                        result.source.index, 
+                    const {movedEventId} = moveEvent(
+                        eventsBacklog,
+                        eventsActive,
+                        result.source.index,
                         result.destination.index);
-                    updateEvent(movedEventId, "active");
-                    setEventsBacklog(sourceEvents);
-                    setEventsActive(destinationEvents);
+                    await updateDestinationEvents(movedEventId, result.source.index, result.destination.index, eventsActive);
+                    await updateEvent(movedEventId, result.destination.index, "active");
                 } else if (result.destination.droppableId === "done") {
-                    const { movedEventId, sourceEvents, destinationEvents } = moveEvent(
-                        eventsBacklog, 
-                        eventsDone, 
-                        result.source.index, 
+                    const {movedEventId} = moveEvent(
+                        eventsBacklog,
+                        eventsDone,
+                        result.source.index,
                         result.destination.index);
-                    updateEvent(movedEventId, "done");
-                    setEventsBacklog(sourceEvents);
-                    setEventsDone(destinationEvents);
+                    await updateDestinationEvents(movedEventId, result.source.index, result.destination.index, eventsDone);
+                    await updateEvent(movedEventId, result.destination.index, "done");
                 }
+                await updateSourceEvents(result.source.index, eventsBacklog);
                 break;
             case "active":
                 if (result.destination.droppableId === "active") {
                     const newEventsActive = [...eventsActive];
                     const [movedEvent] = newEventsActive.splice(result.source.index, 1);
-                    newEventsActive.splice(result.destination.index, 0, movedEvent);
-                    setEventsActive(newEventsActive);
+                    await updateDestinationEvents(movedEvent._id, result.source.index, result.destination.index, eventsActive);
+                    await updateEvent(movedEvent._id, result.destination.index);
                 } else if (result.destination.droppableId === "backlog") {
-                    const { movedEventId, sourceEvents, destinationEvents } = moveEvent(
-                        eventsActive, 
-                        eventsBacklog, 
-                        result.source.index, 
+                    const {movedEventId} = moveEvent(
+                        eventsActive,
+                        eventsBacklog,
+                        result.source.index,
                         result.destination.index);
-                    updateEvent(movedEventId, "backlog");
-                    setEventsActive(sourceEvents);
-                    setEventsBacklog(destinationEvents);
+                    await updateDestinationEvents(movedEventId, result.source.index, result.destination.index, eventsBacklog);
+                    await updateEvent(movedEventId, result.destination.index, "backlog");
                 } else if (result.destination.droppableId === "done") {
-                    const { movedEventId, sourceEvents, destinationEvents } = moveEvent(
-                        eventsActive, 
-                        eventsDone, 
-                        result.source.index, 
+                    const {movedEventId} = moveEvent(
+                        eventsActive,
+                        eventsDone,
+                        result.source.index,
                         result.destination.index);
-                    updateEvent(movedEventId, "done");
-                    setEventsActive(sourceEvents);
-                    setEventsDone(destinationEvents);
+                    await updateDestinationEvents(movedEventId, result.source.index, result.destination.index, eventsDone);
+                    await updateEvent(movedEventId, result.destination.index, "done");
                 }
+                await updateSourceEvents(result.source.index, eventsActive);
                 break;
             case "done":
                 if (result.destination.droppableId === "done") {
                     const newEventsDone = [...eventsDone];
                     const [movedEvent] = newEventsDone.splice(result.source.index, 1);
-                    newEventsDone.splice(result.destination.index, 0, movedEvent);
-                    setEventsDone(newEventsDone);
+                    await updateDestinationEvents(movedEvent._id, result.source.index, result.destination.index, eventsDone);
+                    await updateEvent(movedEvent._id, result.destination.index);
                 } else if (result.destination.droppableId === "backlog") {
-                    const { movedEventId, sourceEvents, destinationEvents } = moveEvent(
-                        eventsDone, 
-                        eventsBacklog, 
-                        result.source.index, 
+                    const {movedEventId} = moveEvent(
+                        eventsDone,
+                        eventsBacklog,
+                        result.source.index,
                         result.destination.index);
-                    updateEvent(movedEventId, "backlog");
-                    setEventsDone(sourceEvents);
-                    setEventsBacklog(destinationEvents);
+                    await updateDestinationEvents(movedEventId, result.source.index, result.destination.index, eventsBacklog);
+                    await updateEvent(movedEventId, result.destination.index, "backlog");
                 } else if (result.destination.droppableId === "active") {
-                    const { movedEventId, sourceEvents, destinationEvents } = moveEvent(
-                        eventsDone, 
-                        eventsActive, 
-                        result.source.index, 
+                    const {movedEventId} = moveEvent(
+                        eventsDone,
+                        eventsActive,
+                        result.source.index,
                         result.destination.index);
-                    updateEvent(movedEventId, "active");
-                    setEventsDone(sourceEvents);
-                    setEventsActive(destinationEvents);
+                    await updateDestinationEvents(movedEventId, result.source.index, result.destination.index, eventsActive);
+                    await updateEvent(movedEventId, result.destination.index, "active");
                 }
+                await updateSourceEvents(result.source.index, eventsDone);
                 break;
             default:
                 break;
@@ -174,14 +195,6 @@ const EventsPage = () => {
         setEventsCross(storedCrossEvents);
     }, []);
 
-    const handleCrossEvent = (eventId) => {
-        if (!eventsCross.includes(eventId)) {
-            const updatedCross = [...eventsCross, eventId];
-            setEventsCross(updatedCross);
-            localStorage.setItem("eventsCross", JSON.stringify(updatedCross));
-        }
-    }
-
     const handleDeleteEvent = async (eventId, getEvents, setEvents) => {
         try {
             await fetch(SERVER_URL + "/api/events/" + eventId, {
@@ -207,34 +220,36 @@ const EventsPage = () => {
                     <Col className="m-0 p-0 pe-2">
                         <Card>
                             <Card.Header className="text-center">Backlog</Card.Header>
-                            <Droppable droppableId="backlog" >
+                            <Droppable droppableId="backlog">
                                 {(provided, snapshot) => (
                                     <Card.Body ref={provided.innerRef} {...provided.droppableProps}>
                                         {eventsBacklog && eventsBacklog.map((event, index) => (
                                             <Draggable key={event._id} draggableId={event._id} index={index}>
                                                 {(provided, snapshot) => (
-                                                    <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} key={event._id} className="m-2">
-                                                        <Card.Body className={`d-flex flex-row align-items-center justify-content-between ${eventsCross.includes(event._id) ? "text-decoration-line-through" : ""}`}>
+                                                    <Card
+                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
+                                                        key={event._id} className="m-2">
+                                                        <Card.Body
+                                                            className={`d-flex flex-row align-items-center justify-content-between ${eventsCross.includes(event._id) ? "text-decoration-line-through" : ""}`}>
                                                             <div>
                                                                 <Card.Text>Due: {format(new Date(event.recurrence.endsOn), "yyyy-MM-dd HH:mm")}</Card.Text>
                                                                 <Card.Title>{event.title}</Card.Title>
                                                                 <Card.Text>{event.description}</Card.Text>
                                                             </div>
                                                             <div className="d-flex flex-column">
-                                                                {/*
-                                                                    <span className="p-2" onClick={() => handleCrossEvent(event._id)} style={{ cursor: "pointer" }}>
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                                        </svg>
-                                                                    </span>
-                                                                */}
-                                                                <span className="p-2" onClick={() => handleDeleteEvent(event._id, eventsBacklog, setEventsBacklog)} style={{ cursor: "pointer" }}>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                                                                <span className="p-2"
+                                                                      onClick={() => handleDeleteEvent(event._id, eventsBacklog, setEventsBacklog)}
+                                                                      style={{cursor: "pointer"}}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25"
+                                                                         height="25" fill="currentColor"
+                                                                         class="bi bi-x-circle-fill"
+                                                                         viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                                                     </svg>
                                                                 </span>
                                                                 <span className="p-2">
-                                                                    <EventDetails eventId={event._id} />
+                                                                    <EventDetails eventId={event._id}/>
                                                                 </span>
                                                             </div>
                                                         </Card.Body>
@@ -257,28 +272,30 @@ const EventsPage = () => {
                                         {eventsActive && eventsActive.map((event, index) => (
                                             <Draggable key={event._id} draggableId={event._id} index={index}>
                                                 {(provided, snapshot) => (
-                                                    <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} key={event._id} className="m-2">
-                                                        <Card.Body className={`d-flex flex-row align-items-center justify-content-between ${eventsCross.includes(event._id) ? "text-decoration-line-through" : ""}`}>
+                                                    <Card
+                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
+                                                        key={event._id} className="m-2">
+                                                        <Card.Body
+                                                            className={`d-flex flex-row align-items-center justify-content-between ${eventsCross.includes(event._id) ? "text-decoration-line-through" : ""}`}>
                                                             <div>
                                                                 <Card.Text>Due: {format(new Date(event.recurrence.endsOn), "yyyy-MM-dd HH:mm")}</Card.Text>
                                                                 <Card.Title>{event.title}</Card.Title>
                                                                 <Card.Text>{event.description}</Card.Text>
                                                             </div>
                                                             <div className="d-flex flex-column">
-                                                                {/*
-                                                                    <span className="p-2" onClick={() => handleCrossEvent(event._id)} style={{ cursor: "pointer" }}>
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                                        </svg>
-                                                                    </span>
-                                                                */}
-                                                                <span className="p-2" onClick={() => handleDeleteEvent(event._id, eventsActive, setEventsActive)} style={{ cursor: "pointer" }}>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                                                                <span className="p-2"
+                                                                      onClick={() => handleDeleteEvent(event._id, eventsActive, setEventsActive)}
+                                                                      style={{cursor: "pointer"}}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25"
+                                                                         height="25" fill="currentColor"
+                                                                         class="bi bi-x-circle-fill"
+                                                                         viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                                                     </svg>
                                                                 </span>
                                                                 <span className="p-2">
-                                                                    <EventDetails eventId={event._id} />
+                                                                    <EventDetails eventId={event._id}/>
                                                                 </span>
                                                             </div>
                                                         </Card.Body>
@@ -301,28 +318,30 @@ const EventsPage = () => {
                                         {eventsDone && eventsDone.map((event, index) => (
                                             <Draggable key={event._id} draggableId={event._id} index={index}>
                                                 {(provided, snapshot) => (
-                                                    <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} key={event._id} className="m-2">
-                                                        <Card.Body className={`d-flex flex-row align-items-center justify-content-between ${eventsCross.includes(event._id) ? "text-decoration-line-through" : ""}`}>
+                                                    <Card
+                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
+                                                        key={event._id} className="m-2">
+                                                        <Card.Body
+                                                            className={`d-flex flex-row align-items-center justify-content-between ${eventsCross.includes(event._id) ? "text-decoration-line-through" : ""}`}>
                                                             <div>
                                                                 <Card.Text>Due: {format(new Date(event.recurrence.endsOn), "yyyy-MM-dd HH:mm")}</Card.Text>
                                                                 <Card.Title>{event.title}</Card.Title>
                                                                 <Card.Text>{event.description}</Card.Text>
                                                             </div>
                                                             <div className="d-flex flex-column">
-                                                                {/*
-                                                                    <span className="p-2" onClick={() => handleCrossEvent(event._id)} style={{ cursor: "pointer" }}>
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                                        </svg>
-                                                                    </span>
-                                                                 */}
-                                                                <span className="p-2" onClick={() => handleDeleteEvent(event._id, eventsDone, setEventsDone)} style={{ cursor: "pointer" }}>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                                                                <span className="p-2"
+                                                                      onClick={() => handleDeleteEvent(event._id, eventsDone, setEventsDone)}
+                                                                      style={{cursor: "pointer"}}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25"
+                                                                         height="25" fill="currentColor"
+                                                                         class="bi bi-x-circle-fill"
+                                                                         viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                                                     </svg>
                                                                 </span>
                                                                 <span className="p-2">
-                                                                    <EventDetails eventId={event._id} />
+                                                                    <EventDetails eventId={event._id}/>
                                                                 </span>
                                                             </div>
                                                         </Card.Body>
