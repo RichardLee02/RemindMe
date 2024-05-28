@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Button, Container, Form, Modal } from "react-bootstrap"
+import {useState} from "react"
+import {Button, Container, Form, Modal} from "react-bootstrap"
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
 import SERVER_URL from "../constants/constants";
@@ -39,7 +39,7 @@ const NewEvent = () => {
     };
     const handleEndsOn = (date) => setEndsOn(date);
     const handleReminders = (e) => {
-        const { name, checked } = e.target;
+        const {name, checked} = e.target;
         switch (name) {
             case "email":
                 setEmail(checked);
@@ -98,10 +98,12 @@ const NewEvent = () => {
 
     return (
         <Container className="m-0 p-0">
-            <span onClick={handleShow} style={{ cursor: "pointer" }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+            <span onClick={handleShow} style={{cursor: "pointer"}}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                 </svg>
             </span>
 
@@ -109,9 +111,11 @@ const NewEvent = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <div className="d-flex flex-row align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-calendar3-event" viewBox="0 0 16 16">
-                                <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
-                                <path d="M12 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-calendar3-event" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+                                <path d="M12 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                             </svg>
                             <h4 className="m-0 p-0 ps-2">New Event</h4>
                         </div>
@@ -125,15 +129,15 @@ const NewEvent = () => {
                                 type="text"
                                 name="title"
                                 value={title}
-                                onChange={(e) => setTitle(e.target.value)} />
-                        </Form.Group >
+                                onChange={(e) => setTitle(e.target.value)}/>
+                        </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="description"
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value)} />
+                                onChange={(e) => setDescription(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label className="d-block">Status</Form.Label>
@@ -216,13 +220,13 @@ const NewEvent = () => {
                         <Form.Group className="mb-3">
                             <Form.Label className="d-block">Period</Form.Label>
                             <Form.Select multiple onChange={handlePeriod}>
-                                <option value="1">Sunday</option>
-                                <option value="2">Monday</option>
-                                <option value="3">Tuesday</option>
-                                <option value="4">Wednesday</option>
-                                <option value="5">Thursday</option>
-                                <option value="6">Friday</option>
-                                <option value="7">Saturday</option>
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3">
@@ -246,23 +250,24 @@ const NewEvent = () => {
                                 value="email"
                                 name="email"
                                 checked={email}
-                                onChange={handleReminders} />
+                                onChange={handleReminders}/>
                             <Form.Check
                                 inline
                                 label="SMS"
                                 type="checkbox"
                                 name="sms"
                                 checked={sms}
-                                onChange={handleReminders} />
+                                onChange={handleReminders}/>
                             <Form.Check
                                 inline
                                 label="In-App"
                                 type="checkbox"
                                 name="inApp"
                                 checked={inApp}
-                                onChange={handleReminders} />
+                                onChange={handleReminders}/>
                         </Form.Group>
-                        {errorMessage && <div className="mt-3"><Form.Text className="text-danger">{errorMessage}</Form.Text></div>}
+                        {errorMessage &&
+                            <div className="mt-3"><Form.Text className="text-danger">{errorMessage}</Form.Text></div>}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>

@@ -61,7 +61,7 @@ const SignupPage = () => {
                     setEmailError("A user with this email already exists.")
                 } else {
                     setEmailError("");
-                };
+                }
                
                 if (data.phoneLength === 0) {
                     setPhoneError("Phone must be in the format XXX-XXX-XXXX.");

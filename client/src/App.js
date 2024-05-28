@@ -10,7 +10,7 @@ import LogoutPage from './pages/LogoutPage';
 import Error404Page from './pages/Error404Page';
 import CalendarPage from './pages/CalendarPage';
 import EventsPage from './pages/EventsPage'
-import ActivitiesPage from './pages/ActivitiesPage';
+import NotificationsPage from './pages/NotificationsPage';
 import SearchEventPage from './pages/SearchEventPage';
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
           <Route index element={<DashboardPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/activities" element={<ActivitiesPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/results/:title" element={<SearchEventPage />} />
         </Route>
         <Route path="*" element={<Error404Page />} />
