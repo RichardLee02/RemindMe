@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap'
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import SERVER_URL from '../constants/constants'
 const socket = io('http://localhost:8080');
 

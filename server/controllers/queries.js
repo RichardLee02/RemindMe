@@ -115,7 +115,7 @@ const getEventsBacklog = async (userId) => {
         const backlogEvents = await Event.find({
             userId,
             status: 'backlog'
-        });
+        }).sort({ index: 1});
         return backlogEvents;
     } catch (err) {
         throw err;
@@ -127,7 +127,7 @@ const getEventsActive = async (userId) => {
         const activeEvents = await Event.find({
             userId,
             status: 'active'
-        });
+        }).sort({ index: 1});
         return activeEvents;
     } catch (err) {
         throw err;
@@ -139,7 +139,7 @@ const getEventsDone = async (userId) => {
         const doneEvents = await Event.find({
             userId,
             status: 'done'
-        });
+        }).sort({ index: 1});
         return doneEvents;
     } catch (err) {
         throw err; 
