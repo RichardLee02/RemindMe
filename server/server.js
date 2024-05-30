@@ -92,9 +92,7 @@ io.on('connect', async socket => {
     }
 });
 
-
 const collection = new Set();
-const INTERVAL_TIME = 60000;
 const transporter = nodemailer.createTransport({
     host: 'smtp.office365.com',
     port: 587,
@@ -107,7 +105,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (mailOptions) => {
     return transporter.sendMail(mailOptions, (error) => {
         if (error) {
-            return console.log(error);
+            console.log(error);
         }
     });
 }
@@ -164,7 +162,7 @@ const sendNotifications = async () => {
     }
 };
 
-const intervalId = setInterval(sendNotifications, INTERVAL_TIME);
+const intervalId = setInterval(sendNotifications, 60000);
 io.on('disconnect', () => {
     clearInterval(intervalId);
 });

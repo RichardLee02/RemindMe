@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Container, Row, Col, Table } from 'react-bootstrap'
+import {useState, useEffect} from 'react';
+import {Container, Row, Col, Table} from 'react-bootstrap'
 import SERVER_URL from '../constants/constants';
-import { format } from 'date-fns'
+import {format} from 'date-fns'
 import NewEvent from "../components/NewEvent";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const DashboardPage = () => {
     const navigate = useNavigate();
@@ -106,7 +106,7 @@ const DashboardPage = () => {
     }, [eventsOverdue])
 
     return (
-        <Container className="text-dark d-flex flex-column bg-body p-4">
+        <Container className="d-flex flex-column p-4">
             <Row>
                 <Col>
                     <h2 className="border-bottom pb-2 mb-3">Dashboard</h2>
@@ -141,7 +141,7 @@ const DashboardPage = () => {
                     <div>{daysOfWeek}</div>
                     <div>{year}-{month}-{day}</div>
                 </Col>
-                <Col sm={8} className="p-2" style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
+                <Col sm={8} className="px-2 py-1" style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     {eventsToday && eventsToday.map((event, index) => (
                         <div key={index} className='rounded px-3 my-2 border bg-white'>
                             <p className="m-0">{format(new Date(event.recurrence.endsOn), "HH:mm")}</p>

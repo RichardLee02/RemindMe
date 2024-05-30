@@ -209,7 +209,7 @@ const EventsPage = () => {
     }
 
     return (
-        <Container className="text-dark p-4">
+        <Container className="p-4">
             <Row>
                 <Col>
                     <h2 className="border-bottom pb-2 mb-3">Events</h2>
