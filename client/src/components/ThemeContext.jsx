@@ -16,6 +16,7 @@ export const ThemeProvider = ({children}) => {
         if (darkMode) {
             document.body.classList.add('darkMode');
             const navbar = document.getElementsByClassName('side-navbar');
+            const blackModal = document.getElementById('black-modal');
             for (let i = 0; i < navbar.length; i++) {
                 navbar[i].classList.remove('lightMode');
                 navbar[i].classList.add('darkMode');

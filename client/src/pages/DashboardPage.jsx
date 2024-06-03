@@ -141,13 +141,15 @@ const DashboardPage = () => {
                     <div>{daysOfWeek}</div>
                     <div>{year}-{month}-{day}</div>
                 </Col>
-                <Col sm={8} className="px-2 py-1" style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
-                    {eventsToday && eventsToday.map((event, index) => (
-                        <div key={index} className='rounded px-3 my-2 border bg-white'>
-                            <p className="m-0">{format(new Date(event.recurrence.endsOn), "HH:mm")}</p>
-                            <p className="m-0">{event.title}: {event.description}</p>
-                        </div>
-                    ))}
+                <Col sm={8} className="px-2 py-1">
+                    {
+                        eventsToday && eventsToday.map((event, index) => (
+                            <div key={index} className='rounded px-3 my-2 border bg-white'>
+                                <p className="m-0">{format(new Date(event.recurrence.endsOn), "HH:mm")}</p>
+                                <p className="m-0">{event.title}: {event.description}</p>
+                            </div>
+                        ))
+                    }
                 </Col>
             </Row>
             <Row>
@@ -162,13 +164,15 @@ const DashboardPage = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {eventsUpcoming && eventsUpcoming.map((event, index) => (
-                            <tr key={index}>
-                                <td>{event.title}</td>
-                                <td>{event.description}</td>
-                                <td>{format(new Date(event.recurrence.endsOn), "yyyy-MM-dd")}</td>
-                            </tr>
-                        ))}
+                        {
+                            eventsUpcoming && eventsUpcoming.map((event, index) => (
+                                <tr key={index}>
+                                    <td>{event.title}</td>
+                                    <td>{event.description}</td>
+                                    <td>{format(new Date(event.recurrence.endsOn), "yyyy-MM-dd")}</td>
+                                </tr>
+                            ))
+                        }
                         </tbody>
                     </Table>
                 </Col>
@@ -183,13 +187,15 @@ const DashboardPage = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {eventsOverdue && eventsOverdue.map((event, index) => (
-                            <tr key={index}>
-                                <td>{event.title}</td>
-                                <td>{event.description}</td>
-                                <td>{format(new Date(event.recurrence.endsOn), "yyyy-MM-dd")}</td>
-                            </tr>
-                        ))}
+                        {
+                            eventsOverdue && eventsOverdue.map((event, index) => (
+                                <tr key={index}>
+                                    <td>{event.title}</td>
+                                    <td>{event.description}</td>
+                                    <td>{format(new Date(event.recurrence.endsOn), "yyyy-MM-dd")}</td>
+                                </tr>
+                            ))
+                        }
                         </tbody>
                     </Table>
                 </Col>

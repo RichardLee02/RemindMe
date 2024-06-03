@@ -48,3 +48,7 @@ code {
     color: #FFFFFF !important;
     background-color: #121212 !important;
 }
+
+.form-modal {
+    background-color: #D3D3D3 !important;
+}
