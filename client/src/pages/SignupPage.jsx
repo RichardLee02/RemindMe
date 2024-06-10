@@ -1,6 +1,6 @@
-import { Form, Button, Container, Row, Col, Card, FloatingLabel } from 'react-bootstrap';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Form, Button, Container, Row, Col, Card, FloatingLabel} from 'react-bootstrap';
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import SERVER_URL from '../constants/constants';
 
 const SignupPage = () => {
@@ -14,14 +14,14 @@ const SignupPage = () => {
     const [phoneError, setPhoneError] = useState("");
     const navigate = useNavigate();
 
-    const handleSignUp = async (e) =>{
+    const handleSignUp = async (e) => {
         try {
             e.preventDefault();
             const url = SERVER_URL + "/auth/signup";
-            const signup = { 
-                username, 
-                password, 
-                email, 
+            const signup = {
+                username,
+                password,
+                email,
                 phone
             };
             const response = await fetch(url, {
@@ -53,8 +53,8 @@ const SignupPage = () => {
                     setPasswordError("Password must be at least 8 characters long.");
                 } else {
                     setPasswordError("");
-                } 
-                
+                }
+
                 if (data.emailLength === 0) {
                     setEmailError("Email must be in the format XXX@XXX.com.");
                 } else if (data.isEmail) {
@@ -62,7 +62,7 @@ const SignupPage = () => {
                 } else {
                     setEmailError("");
                 }
-               
+
                 if (data.phoneLength === 0) {
                     setPhoneError("Phone must be in the format XXX-XXX-XXXX.");
                 } else if (data.isPhone) {
@@ -80,14 +80,14 @@ const SignupPage = () => {
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
             <Row>
                 <Col>
-                    <Card style={{ width: "25rem" }}>
+                    <Card style={{width: "25rem"}}>
                         <Card.Body>
                             <Card.Title className="mt-2 mb-4 text-center fs-2 text-dark">RemindMe</Card.Title>
                             <Form className="text-dark" onSubmit={handleSignUp}>
                                 <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingUsername" label="Username">
-                                        <Form.Control 
-                                            className="text-dark" 
+                                        <Form.Control
+                                            className="text-dark"
                                             type="text"
                                             name="username"
                                             value={username}
@@ -98,7 +98,7 @@ const SignupPage = () => {
                                 <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingPassword" label="Password">
                                         <Form.Control
-                                            className="text-dark"  
+                                            className="text-dark"
                                             type="password"
                                             name="password"
                                             value={password}
@@ -109,7 +109,7 @@ const SignupPage = () => {
                                 <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingEmail" label="Email">
                                         <Form.Control
-                                            className="text-dark"  
+                                            className="text-dark"
                                             type="email"
                                             name="email"
                                             value={email}
@@ -117,10 +117,10 @@ const SignupPage = () => {
                                             placeholder="Email"/>
                                     </FloatingLabel>
                                 </Form.Group>
-                                <Form.Group className="mb-3" >
+                                <Form.Group className="mb-3">
                                     <FloatingLabel controlId="floatingPhone" label="Phone">
                                         <Form.Control
-                                            className="text-dark"  
+                                            className="text-dark"
                                             type="tel"
                                             name="phone"
                                             value={phone}
@@ -129,16 +129,37 @@ const SignupPage = () => {
                                     </FloatingLabel>
                                 </Form.Group>
                                 <Button className="w-100 mb-4" variant="outline-primary" type="submit">Sign Up</Button>
-                                { usernameError && <div className="text-center"><Form.Text className="text-danger">{usernameError}</Form.Text></div> }
-                                { passwordError && <div className="text-center"><Form.Text className="text-danger">{passwordError}</Form.Text></div> }
-                                { emailError && <div className="text-center"><Form.Text className="text-danger">{emailError}</Form.Text></div> }
-                                { phoneError && <div className="text-center"><Form.Text className="text-danger">{phoneError}</Form.Text></div> }
+                                {
+                                    usernameError &&
+                                    <div className="text-center">
+                                        <Form.Text className="text-danger">{usernameError}</Form.Text>
+                                    </div>
+                                }
+                                {
+                                    passwordError &&
+                                    <div className="text-center">
+                                        <Form.Text className="text-danger">{passwordError}</Form.Text>
+                                    </div>
+                                }
+                                {
+                                    emailError &&
+                                    <div className="text-center">
+                                        <Form.Text className="text-danger">{emailError}</Form.Text>
+                                    </div>
+                                }
+                                {
+                                    phoneError &&
+                                    <div className="text-center">
+                                        <Form.Text className="text-danger">{phoneError}</Form.Text>
+                                    </div>
+                                }
                             </Form>
                         </Card.Body>
                     </Card>
                     <Card className="mt-3 text-dark">
                         <Card.Body>
-                            <Card.Text className="text-center">Have an account? <Card.Link className="text-decoration-none" href="/login">Log In</Card.Link></Card.Text>
+                            <Card.Text className="text-center">Have an account? <Card.Link
+                                className="text-decoration-none" href="/login">Log In</Card.Link></Card.Text>
                         </Card.Body>
                     </Card>
                     <p className="mt-3 text-center small text-dark">&copy; 2023 &mdash; RemindMe</p>

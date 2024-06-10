@@ -3,6 +3,8 @@ import {Button, Container, Form, Modal} from "react-bootstrap"
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
 import SERVER_URL from "../constants/constants";
+import NewEventLogo from "./images/NewEventLogo";
+import CalendarLogo from "./images/CalendarLogo";
 
 const NewEvent = () => {
     const [show, setShow] = useState(false);
@@ -99,24 +101,14 @@ const NewEvent = () => {
     return (
         <Container className="m-0 p-0">
             <span onClick={handleShow} style={{cursor: "pointer"}}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                     class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path
-                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                </svg>
+                <NewEventLogo/>
             </span>
 
             <Modal className="text-black" show={show} onHide={handleClose}>
                 <Modal.Header className="form-modal" closeButton>
                     <Modal.Title>
                         <div className="d-flex flex-row align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 className="bi bi-calendar3-event bg-white" viewBox="0 0 16 16">
-                                <path
-                                    d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
-                                <path d="M12 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-                            </svg>
+                            <CalendarLogo/>
                             <h4 className="m-0 p-0 ps-2">New Event</h4>
                         </div>
                     </Modal.Title>

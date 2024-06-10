@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { Button, Container, Modal } from "react-bootstrap"
+import {useEffect, useState} from "react";
+import {Button, Container, Modal} from "react-bootstrap"
 import SERVER_URL from "../constants/constants";
-import { format } from "date-fns";
+import {format} from "date-fns";
+import CalendarLogo from "./images/CalendarLogo";
+import EventDetailsLogo from "./images/EventDetailsLogo";
 
-const EventDetails = ({ eventId }) => {
+const EventDetails = ({eventId}) => {
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -38,7 +40,7 @@ const EventDetails = ({ eventId }) => {
                 case 5:
                     daysOfWeekCollection.push("Thursday");
                     break;
-                case 6: 
+                case 6:
                     daysOfWeekCollection.push("Friday");
                     break;
                 case 7:
@@ -81,7 +83,7 @@ const EventDetails = ({ eventId }) => {
                     credentials: "include"
                 });
                 const data = await response.json();
-                const { title, description, created, status, recurrence, reminders } = data;
+                const {title, description, created, status, recurrence, reminders} = data;
                 setTitle(title);
                 setDescription(description);
                 setStatus(capitalizeFirstLetter(status));
@@ -99,33 +101,52 @@ const EventDetails = ({ eventId }) => {
 
     return (
         <Container className="m-0 p-0">
-            <span onClick={handleShow} style={{ cursor: "pointer" }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z" />
-                </svg>
+            <span onClick={handleShow} style={{cursor: "pointer"}}>
+                <EventDetailsLogo/>
             </span>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <div className="d-flex flex-row align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-calendar3-event" viewBox="0 0 16 16">
-                                <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
-                                <path d="M12 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
-                            </svg>
+                            <CalendarLogo/>
                             <h4 className="m-0 p-0 ps-2">Event</h4>
                         </div>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p><span className="text-black-50">Title: </span>{title}</p>
-                    <p><span className="text-black-50">Description: </span>{description}</p>
-                    <p><span className="text-black-50">Status: </span>{status}</p>
-                    <p><span className="text-black-50">Type: </span>{type}</p>
-                    <p><span className="text-black-50">Period: </span>{period && period.join(", ")}</p>
-                    <p><span className="text-black-50">Created On: </span>{format(new Date(created), "yyyy-MM-dd HH:mm")}</p>
-                    <p><span className="text-black-50">Due On: </span>{format(new Date(endsOn), "yyyy-MM-dd HH:mm")}</p>
-                    <p className="m-0 p-0"><span className="text-black-50">Reminders: </span>{reminders && reminders.join(", ")}</p>
+                    <p>
+                        <span className="text-black-50">Title: </span>
+                        {title}
+                    </p>
+                    <p>
+                        <span className="text-black-50">Description: </span>
+                        {description}
+                    </p>
+                    <p>
+                        <span className="text-black-50">Status: </span>
+                        {status}
+                    </p>
+                    <p>
+                        <span className="text-black-50">Type: </span>
+                        {type}
+                    </p>
+                    <p>
+                        <span className="text-black-50">Period: </span>
+                        {period && period.join(", ")}
+                    </p>
+                    <p>
+                        <span className="text-black-50">Created On: </span>
+                        {format(new Date(created), "yyyy-MM-dd HH:mm")}
+                    </p>
+                    <p>
+                        <span className="text-black-50">Due On: </span>
+                        {format(new Date(endsOn), "yyyy-MM-dd HH:mm")}
+                    </p>
+                    <p className="m-0 p-0">
+                        <span className="text-black-50">Reminders: </span>
+                        {reminders && reminders.join(", ")}
+                    </p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-primary" onClick={handleClose}>Close</Button>

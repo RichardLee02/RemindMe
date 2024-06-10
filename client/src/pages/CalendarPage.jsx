@@ -1,13 +1,13 @@
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
+import {Calendar, dateFnsLocalizer} from 'react-big-calendar'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import enUS from 'date-fns/locale/en-US'
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
 import SERVER_URL from '../constants/constants'
 import parseISO from 'date-fns/parseISO';
-import { Container, Row, Col } from 'react-bootstrap'
+import {Container, Row, Col} from 'react-bootstrap'
 
 const CalendarPage = (props) => {
     const [events, setEvents] = useState([]);
@@ -67,7 +67,7 @@ const CalendarPage = (props) => {
                         events={eventData(events)}
                         startAccessor="start"
                         endAccessor="end"
-                        style={{ height: 500 }}
+                        style={{height: 500}}
                     />
                 </Col>
             </Row>

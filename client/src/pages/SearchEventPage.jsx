@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap"
-import { useParams } from 'react-router-dom';
+import {useEffect, useState} from "react";
+import {Card, Col, Container, Row} from "react-bootstrap"
+import {useParams} from 'react-router-dom';
 import SERVER_URL from '../constants/constants';
 import EventDetails from "../components/EventDetails"
-import { format } from "date-fns";
+import {format} from "date-fns";
+import DeleteLogo from "../components/images/DeleteLogo";
 
 const SearchEventPage = () => {
-    const { title } = useParams();
+    const {title} = useParams();
     const [events, setEvents] = useState([]);
 
     const handleDeleteEvent = async (eventId, getEvents, setEvents) => {
@@ -53,7 +54,7 @@ const SearchEventPage = () => {
                         <Col key={index} className="mb-3">
                             <Card className="d-flex flex-row p-3">
                                 <Col md={10}>
-                                    <Card style={{ marginRight: "0.5rem" }}>
+                                    <Card style={{marginRight: "0.5rem"}}>
                                         <Card.Body>
                                             <Card.Text>Due: {format(new Date(event.recurrence.endsOn), "yyyy-MM-dd HH:mm")}</Card.Text>
                                             <Card.Title>{event.title}</Card.Title>
@@ -63,14 +64,14 @@ const SearchEventPage = () => {
                                 </Col>
                                 <Col md={2} className="d-flex align-items-center justify-content-center me-2">
                                     <Card className="w-100 h-100">
-                                        <Card.Body className="d-flex flex-row align-items-center justify-content-center">
-                                            <div className="p-2" onClick={() => handleDeleteEvent(event._id)} style={{ cursor: "pointer" }}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                                                </svg>
+                                        <Card.Body
+                                            className="d-flex flex-row align-items-center justify-content-center">
+                                            <div className="p-2" onClick={() => handleDeleteEvent(event._id)}
+                                                 style={{cursor: "pointer"}}>
+                                                <DeleteLogo/>
                                             </div>
                                             <div className="p-2">
-                                                <EventDetails eventId={event._id} />
+                                                <EventDetails eventId={event._id}/>
                                             </div>
                                         </Card.Body>
                                     </Card>
