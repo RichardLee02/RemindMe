@@ -60,7 +60,7 @@ const NewEvent = () => {
         try {
             e.preventDefault();
             setErrorMessage("");
-            if (!title || !description || !status || !type || !daysOfWeek.length || !endsOn || (email === false && sms === false && inApp === false)) {
+            if (!title || !description || !status || !daysOfWeek.length || !endsOn || (email === false && inApp === false)) {
                 setErrorMessage("Please Fill In All Required Fields.");
                 return;
             }
@@ -71,13 +71,11 @@ const NewEvent = () => {
                 description,
                 status,
                 recurrence: {
-                    type,
                     daysOfWeek,
                     endsOn
                 },
                 reminders: {
                     email,
-                    sms,
                     inApp
                 }
             };
@@ -161,54 +159,54 @@ const NewEvent = () => {
                                 onChange={handleStatus}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label className="d-block">Type</Form.Label>
-                            <Form.Check
-                                inline
-                                label="None"
-                                type="radio"
-                                name="type"
-                                value="none"
-                                checked={type === "none"}
-                                onChange={handleType}
-                            />
-                            <Form.Check
-                                inline
-                                label="Daily"
-                                type="radio"
-                                name="type"
-                                value="daily"
-                                checked={type === "daily"}
-                                onChange={handleType}
-                            />
-                            <Form.Check
-                                inline
-                                label="Weekly"
-                                type="radio"
-                                name="type"
-                                value="weekly"
-                                checked={type === "weekly"}
-                                onChange={handleType}
-                            />
-                            <Form.Check
-                                inline
-                                label="Bi-weekly"
-                                type="radio"
-                                name="type"
-                                value="bi-weekly"
-                                checked={type === "bi-weekly"}
-                                onChange={handleType}
-                            />
-                            <Form.Check
-                                inline
-                                label="Monthly"
-                                type="radio"
-                                name="type"
-                                value="monthly"
-                                checked={type === "monthly"}
-                                onChange={handleType}
-                            />
-                        </Form.Group>
+                        {/*<Form.Group className="mb-3">*/}
+                        {/*    <Form.Label className="d-block">Type</Form.Label>*/}
+                        {/*    <Form.Check*/}
+                        {/*        inline*/}
+                        {/*        label="None"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="type"*/}
+                        {/*        value="none"*/}
+                        {/*        checked={type === "none"}*/}
+                        {/*        onChange={handleType}*/}
+                        {/*    />*/}
+                        {/*    <Form.Check*/}
+                        {/*        inline*/}
+                        {/*        label="Daily"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="type"*/}
+                        {/*        value="daily"*/}
+                        {/*        checked={type === "daily"}*/}
+                        {/*        onChange={handleType}*/}
+                        {/*    />*/}
+                        {/*    <Form.Check*/}
+                        {/*        inline*/}
+                        {/*        label="Weekly"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="type"*/}
+                        {/*        value="weekly"*/}
+                        {/*        checked={type === "weekly"}*/}
+                        {/*        onChange={handleType}*/}
+                        {/*    />*/}
+                        {/*    <Form.Check*/}
+                        {/*        inline*/}
+                        {/*        label="Bi-weekly"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="type"*/}
+                        {/*        value="bi-weekly"*/}
+                        {/*        checked={type === "bi-weekly"}*/}
+                        {/*        onChange={handleType}*/}
+                        {/*    />*/}
+                        {/*    <Form.Check*/}
+                        {/*        inline*/}
+                        {/*        label="Monthly"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="type"*/}
+                        {/*        value="monthly"*/}
+                        {/*        checked={type === "monthly"}*/}
+                        {/*        onChange={handleType}*/}
+                        {/*    />*/}
+                        {/*</Form.Group>*/}
                         <Form.Group className="mb-3">
                             <Form.Label className="d-block">Period</Form.Label>
                             <Form.Select multiple onChange={handlePeriod}>
@@ -243,13 +241,13 @@ const NewEvent = () => {
                                 name="email"
                                 checked={email}
                                 onChange={handleReminders}/>
-                            <Form.Check
-                                inline
-                                label="SMS"
-                                type="checkbox"
-                                name="sms"
-                                checked={sms}
-                                onChange={handleReminders}/>
+                            {/*<Form.Check*/}
+                            {/*    inline*/}
+                            {/*    label="SMS"*/}
+                            {/*    type="checkbox"*/}
+                            {/*    name="sms"*/}
+                            {/*    checked={sms}*/}
+                            {/*    onChange={handleReminders}/>*/}
                             <Form.Check
                                 inline
                                 label="In-App"
