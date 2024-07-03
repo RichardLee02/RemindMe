@@ -3,7 +3,6 @@ import {NavLink, useLocation} from 'react-router-dom';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {useContext} from "react";
 import {ThemeContext} from "./ThemeContext";
-import RemindMeLogo from "./images/RemindMeLogo";
 import DashboardActiveLogo from "./images/DashboardActiveLogo";
 import DashboardDefaultLogo from "./images/DashboardDefaultLogo";
 import EventsActiveLogo from "./images/EventsActiveLogo";
@@ -13,7 +12,7 @@ import CalendarActiveLogo from "./images/CalendarActiveLogo";
 import NotificationsDefaultLogo from "./images/NotificationsDefaultLogo";
 import NotificationsActiveLogo from "./images/NotificationsActiveLogo";
 
-const SideNavigationBar = () => {
+const BottomNavigationBar = () => {
     const location = useLocation();
     const {darkMode, setDarkMode} = useContext(ThemeContext);
 
@@ -22,22 +21,15 @@ const SideNavigationBar = () => {
     }
 
     return (
-        <Navbar className="d-flex flex-column position-fixed p-4 min-vh-100 border-end" style={{width: "inherit"}}>
-            <NavLink to="/"
-                     className={`d-flex align-items-center text-decoration-none border-0 w-100 mb-5 rounded side-navbar ${darkMode ? 'darkMode' : 'lightMode'}`}>
-                <span className="d-inline px-1 py-2 rounded text-center">
-                    <RemindMeLogo/>
-                </span>
-                <span className="fs-5 ms-1 fw-bold d-none d-lg-inline">RemindMe</span>
-            </NavLink>
-            <Nav className="d-flex flex-column w-100">
+        <Navbar className={`d-flex flex-row p-1 ${darkMode ? 'darkMode' : 'lightMode'}`}>
+            <Nav className="d-flex flex-row w-100 justify-content-around">
                 <Nav.Item className="my-2">
                     <NavLink to="/"
                              className={`d-flex align-items-center text-decoration-none px-1 py-2 custom rounded side-navbar ${darkMode ? 'darkMode' : 'lightMode'}`}>
                         {
                             isActive("/") ? <DashboardActiveLogo/> : <DashboardDefaultLogo/>
                         }
-                        <span className="px-2 fs-6 d-none d-lg-inline">Dashboard</span>
+                        <span className="px-2 fs-6 d-none d-md-inline">Dashboard</span>
                     </NavLink>
                 </Nav.Item>
                 <Nav.Item className="my-2">
@@ -46,7 +38,7 @@ const SideNavigationBar = () => {
                         {
                             isActive("/events") ? <EventsActiveLogo/> : <EventsDefaultLogo/>
                         }
-                        <span className="px-2 fs-6 d-none d-lg-inline">Events</span>
+                        <span className="px-2 fs-6 d-none d-md-inline">Events</span>
                     </NavLink>
                 </Nav.Item>
                 <Nav.Item className="my-2">
@@ -55,7 +47,7 @@ const SideNavigationBar = () => {
                         {
                             isActive("/calendar") ? <CalendarActiveLogo/> : <CalendarDefaultLogo/>
                         }
-                        <span className="px-2 fs-6 d-none d-lg-inline">Calendar</span>
+                        <span className="px-2 fs-6 d-none d-md-inline">Calendar</span>
                     </NavLink>
                 </Nav.Item>
                 <Nav.Item className="my-2">
@@ -64,7 +56,7 @@ const SideNavigationBar = () => {
                         {
                             isActive("/notifications") ? <NotificationsActiveLogo/> : <NotificationsDefaultLogo/>
                         }
-                        <span className="px-2 fs-6 d-none d-lg-inline">Notifications</span>
+                        <span className="px-2 fs-6 d-none d-md-inline">Notifications</span>
                     </NavLink>
                 </Nav.Item>
             </Nav>
@@ -72,4 +64,4 @@ const SideNavigationBar = () => {
     );
 }
 
-export default SideNavigationBar;
+export default BottomNavigationBar;

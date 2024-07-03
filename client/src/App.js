@@ -12,6 +12,7 @@ import CalendarPage from './pages/CalendarPage';
 import EventsPage from './pages/EventsPage'
 import NotificationsPage from './pages/NotificationsPage';
 import SearchEventPage from './pages/SearchEventPage';
+import BottomNavigationBar from "./components/BottomNavigationBar";
 
 function App() {
     return (
@@ -37,15 +38,23 @@ function DashboardLayout() {
     return (
         <Container fluid className="m-0 p-0">
             <Row className="m-0 p-0">
-                <Col sm={2} className="p-0 m-0 min-vh-100">
+                <Col sm={2} className="p-0 d-none d-sm-block">
                     <SideNavigationBar/>
                 </Col>
-                <Col sm={10} className="p-0 m-0 min-vh-100">
+                <Col xs={12} sm={10} className="p-0 m-0">
                     <div className='upper-section'>
                         <TopNavigationBar/>
                     </div>
                     <div className="lower-section">
                         <Outlet/>
+                    </div>
+                </Col>
+                <Col xs={12} className="d-block d-sm-none">
+                    <div style={{height: "65px"}}/>
+                </Col>
+                <Col xs={12} className="p-0 d-block d-sm-none">
+                    <div className="fixed-bottom">
+                        <BottomNavigationBar/>
                     </div>
                 </Col>
             </Row>

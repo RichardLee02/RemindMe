@@ -18,6 +18,13 @@
     margin-top: 75px;
 }
 
+.fixed-bottom {
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    border-top: 1px solid rgb(222, 226, 230);
+    z-index: 100;
+}
+
 .calendar-container {
     width: 100%;
 }
@@ -34,4 +41,15 @@
 .darkMode {
     color: #FFFFFF !important;
     background-color: #121212 !important;
+}
+
+.custom-border {
+    border-right: 1px solid rgb(222, 226, 230);
+}
+
+@media only screen and (max-width: 767px) {
+    .custom-border {
+        border-right: none;
+        border-bottom: 1px solid rgb(222, 226, 230);
+    }
 }

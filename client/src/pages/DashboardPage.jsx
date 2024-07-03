@@ -2,8 +2,9 @@ import {useState, useEffect} from 'react';
 import {Container, Row, Col, Table} from 'react-bootstrap'
 import SERVER_URL from '../constants/constants';
 import {format} from 'date-fns'
-import NewEvent from "../components/NewEvent";
+import NewEvent from '../components/NewEvent';
 import {useNavigate} from 'react-router-dom';
+import '../index.css'
 
 const DashboardPage = () => {
     const navigate = useNavigate();
@@ -112,48 +113,72 @@ const DashboardPage = () => {
                     <h2 className="border-bottom pb-2 mb-3">Dashboard</h2>
                 </Col>
             </Row>
-            <Row className='m-0 justify-content-between'>
-                <Col className="border p-4 me-4 rounded d-flex flex-column align-items-center justify-content-center">
+            <Row className="m-0">
+                <Col sm={12}
+                     md={6}
+                     lg={3}
+                     className="border p-4 rounded d-flex flex-column align-items-center justify-content-center"
+                >
                     <h5>Add Event</h5>
                     <div className="text-primary">
                         <NewEvent/>
                     </div>
                 </Col>
-                <Col className="border p-4 me-4 rounded d-flex flex-column align-items-start justify-content-center">
+                <Col sm={12}
+                     md={6}
+                     lg={3}
+                     className="border p-4 rounded d-flex flex-column align-items-start justify-content-center"
+                >
                     <h5>Backlog</h5>
                     <div className="fs-5">{eventsOverview.numBacklogEvents}</div>
                     <a className="text-decoration-none" href="/events"><small>View Full List</small></a>
                 </Col>
-                <Col className="border p-4 me-4 rounded d-flex flex-column align-items-start justify-content-center">
+                <Col sm={12}
+                     md={6}
+                     lg={3}
+                     className="border p-4 rounded d-flex flex-column align-items-start justify-content-center"
+                >
                     <h5>Active</h5>
                     <div className="fs-5">{eventsOverview.numActiveEvents}</div>
                     <a className="text-decoration-none" href="/events"><small>View Full List</small></a>
                 </Col>
-                <Col className="border p-4 rounded d-flex flex-column align-items-start justify-content-center">
+                <Col
+                    sm={12}
+                    md={6}
+                    lg={3}
+                    className="border p-4 rounded d-flex flex-column align-items-start justify-content-center"
+                >
                     <h5>Done</h5>
                     <div className="fs-5">{eventsOverview.numDoneEvents}</div>
                     <a className="text-decoration-none" href="/events"><small>View Full List</small></a>
                 </Col>
             </Row>
-            <Row className='border rounded mx-0 mt-4'>
-                <Col sm={4} className="d-flex flex-column align-items-center justify-content-center border-end p-4">
+            <Row className="border rounded mx-0 mt-4">
+                <Col sm={12}
+                     md={4}
+                     className="d-flex flex-column align-items-center justify-content-center custom-border p-4"
+                >
                     <h5>Today</h5>
                     <div>{daysOfWeek}</div>
                     <div>{year}-{month}-{day}</div>
                 </Col>
-                <Col sm={8} className="px-2 py-1">
+                <Col sm={12} md={8} className="px-2 py-1">
                     {
-                        eventsToday && eventsToday.map((event, index) => (
-                            <div key={index} className='rounded px-3 my-2 border bg-white'>
-                                <p className="m-0">{format(new Date(event.recurrence.endsOn), "HH:mm")}</p>
-                                <p className="m-0">{event.title}: {event.description}</p>
-                            </div>
-                        ))
+                        eventsToday.length === 0 ?
+                            <div className="d-flex flex-column justify-content-center rounded px-3 my-2 h-100">
+                                <p>Nothing Due Today...</p>
+                            </div> :
+                            eventsToday && eventsToday.map((event, index) => (
+                                <div key={index} className="rounded px-3 my-2 border bg-white">
+                                    <p className="m-0">{format(new Date(event.recurrence.endsOn), "HH:mm")}</p>
+                                    <p className="m-0">{event.title}: {event.description}</p>
+                                </div>
+                            ))
                     }
                 </Col>
             </Row>
             <Row>
-                <Col>
+                <Col sm={12} md={6}>
                     <h5 className='border-bottom my-3 py-2'>Present</h5>
                     <Table striped bordered>
                         <thead>
@@ -176,7 +201,7 @@ const DashboardPage = () => {
                         </tbody>
                     </Table>
                 </Col>
-                <Col>
+                <Col sm={12} md={6}>
                     <h5 className='border-bottom my-3 py-2'>Past</h5>
                     <Table striped bordered>
                         <thead>

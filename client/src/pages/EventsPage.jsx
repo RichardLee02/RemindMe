@@ -218,7 +218,7 @@ const EventsPage = () => {
             </Row>
             <Row className="m-0 p-0">
                 <DragDropContext onDragEnd={onDragEnd}>
-                    <Col className="m-0 p-0 pe-2">
+                    <Col xs={12} lg={4} className="m-0 p-0">
                         <Card>
                             <Card.Header className="text-center">Backlog</Card.Header>
                             <Droppable droppableId="backlog">
@@ -258,7 +258,7 @@ const EventsPage = () => {
                             </Droppable>
                         </Card>
                     </Col>
-                    <Col className="m-0 px-2">
+                    <Col xs={12} lg={4} className="m-0 p-0">
                         <Card>
                             <Card.Header className="text-center">Active</Card.Header>
                             <Droppable droppableId="active">
@@ -298,7 +298,7 @@ const EventsPage = () => {
                             </Droppable>
                         </Card>
                     </Col>
-                    <Col className="m-0 p-0 ps-2">
+                    <Col xs={12} lg={4} className="m-0 p-0">
                         <Card>
                             <Card.Header className="text-center">Done</Card.Header>
                             <Droppable droppableId="done">
