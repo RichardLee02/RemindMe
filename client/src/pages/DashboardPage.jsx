@@ -153,7 +153,7 @@ const DashboardPage = () => {
                     <a className="text-decoration-none" href="/events"><small>View Full List</small></a>
                 </Col>
             </Row>
-            <Row className="border rounded mx-0 mt-4">
+            <Row className="border rounded mx-0 my-3">
                 <Col sm={12}
                      md={4}
                      className="d-flex flex-column align-items-center justify-content-center custom-border p-4"
@@ -162,7 +162,7 @@ const DashboardPage = () => {
                     <div>{daysOfWeek}</div>
                     <div>{year}-{month}-{day}</div>
                 </Col>
-                <Col sm={12} md={8} className="px-2 py-1">
+                <Col sm={12} md={8} className="px-2 py-1 text-black">
                     {
                         eventsToday.length === 0 ?
                             <div className="d-flex flex-column justify-content-center rounded px-3 my-2 h-100">
